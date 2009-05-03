@@ -6,10 +6,10 @@ default_ask_author = ENV['USER'] || ENV['USERNAME'];
 ask_author = ask("What is the site author's name? (Return for '#{default_ask_author}')")
 ask_author = default_ask_author if ask_author.blank?
 yes_testing = yes?("Do you want to use testing libraries (RSpec, Webrat, & Cucumber)? (Return for 'no')")
-yes_symlink_plugins = yes?("Do you want to use symlinks to existing local copies of the plugins repos? (Return or 'no' if you want to make new local copies of the repos)")
+yes_symlink_plugins = yes?("Do you want to use symlinks to existing local copies of the plugins repos? (Return or 'no' to make new local repo copies)")
 if yes_symlink_plugins
   default_ask_symlink_dir = "~/Library/RubyOnRails/plugins"
-  ask_symlink_dir = yes?("In which directory are the current plugins? (Return for '#{ask_symlink_dir}/')")
+  ask_symlink_dir = yes?("In which directory are the current plugins? (Return for '#{default_ask_symlink_dir}/')")
   ask_symlink_dir = default_ask_symlink_dir if ask_symlink_dir.blank?
 end
 ask_exception_notified = ask("List the space-separated emails which should be notified of site exceptions? (Return for none)")
@@ -86,13 +86,13 @@ end
 if yes_symlink_plugins
   inside "vendor/plugins" do
     %w(active_enumeration acts_as_list indexer searchable_record trainyard engines easy-fckeditor http_accept_language make_resourceful).each do |plugin_name|
-      run "ln -s #{ask_symlink_dir}/#{plugin_name} #{plugin_name}"
+      run "ln -s #{File.join(ask_symlink_dir, plugin_name)} #{plugin_name}"
     end
-    run "ln -s #{ask_symlink_dir}/exception_notification exception_notification" if yes_exception_notification
-    run "ln -s #{ask_symlink_dir}/marketplace marketplace" if yes_marketplace
+    run "ln -s #{File.join(ask_symlink_dir, 'exception_notification')} exception_notification" if yes_exception_notification
+    run "ln -s #{File.join(ask_symlink_dir, 'marketplace')} marketplace" if yes_marketplace
     if yes_geokit
-      run "ln -s #{ask_symlink_dir}/geographer geographer"
-      run "ln -s #{ask_symlink_dir}/geokit-rails geokit-rails"
+      run "ln -s #{File.join(ask_symlink_dir, 'geographer')} geographer"
+      run "ln -s #{File.join(ask_symlink_dir, 'geokit-rails')} geokit-rails"
     end
   end
 else
@@ -102,7 +102,6 @@ else
   plugin "searchable_record", :git => "git://github.com/glennpow/searchable_record.git"
   plugin "trainyard", :git => "git://github.com/glennpow/trainyard.git"
   plugin "engines", :git => "git://github.com/lazyatom/engines.git"
-  #plugin "fckeditor", :git => "git://github.com/davividal/fckeditor.git"
   plugin "easy-fckeditor", :git => "git://github.com/gramos/easy-fckeditor.git"
   plugin "http_accept_language", :git => "git://github.com/iain/http_accept_language.git"
   plugin "make_resourceful", :git => "git://github.com/hcatlin/make_resourceful.git"
@@ -192,7 +191,7 @@ CODE
 
 file "app/controllers/application_controller.rb", <<-CODE
 class ApplicationController < ActionController::Base
-  #{yes_exception_notification ? "include ExceptionNotification" : ""}
+  #{yes_exception_notification ? "include ExceptionNotifiable" : ""}
 
   helper :all
 
@@ -796,7 +795,7 @@ CODE
 
 file "app/views/site/_footer.html.erb", <<-CODE
 <div class="powered-by">
-  Powered by <strong><a href="http://github.com/glennpow/bullettrain/tree/master">BulletTrain</a></strong>
+  Powered by <strong><a href="http://github.com/glennpow/bullet_train/tree/master">BulletTrain</a></strong>
   <p>© 2009 <a href="http://github.com/glennpow">Glenn Powell</a> All rights reserved.</p>
 </div>
 CODE
