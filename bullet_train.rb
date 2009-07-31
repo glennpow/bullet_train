@@ -80,7 +80,7 @@ if yes_testing
   gem "cucumber", :lib => false, :version => '>=0.2.2', :source => 'http://gems.github.com'
 end
 if yes_geokit
-  gem "andre-geokit-gem", :lib => 'geokit', :source => 'http://gems.github.com'
+  gem "andre-geokit", :lib => 'geokit', :source => 'http://gems.github.com'
 end
 
 if yes_symlink_plugins
