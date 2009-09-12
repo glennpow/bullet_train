@@ -832,7 +832,7 @@ file "app/views/site/root.html.erb", <<-CODE
 <div class="wrapper">
   <div class="main">
 	  <% if logged_in? %>
-			<p><%= link_to_unless_current("Welcome \#{user_name}", user_path(current_user)) %></p>
+			<p><%= link_to_unless_current("Welcome \#{h(current_user.name)}", user_path(current_user)) %></p>
 			<p><%= link_to_unless_current(t(:home), home_path) %></p>
 	  <% else %>
 			<p>Already Registered?</p>
