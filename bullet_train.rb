@@ -70,6 +70,8 @@ Rails::Initializer.run do |config|
 end
 CODE
 
+gem 'mysql'
+gem "RedCloth", :version => '>= 4.0.1'
 gem "authlogic", :version => '>=2.0.0', :source => 'http://gems.github.com'
 gem "thoughtbot-paperclip", :lib => 'paperclip', :version => '>=2.2.8', :source => 'http://gems.github.com'
 gem "mislav-will_paginate", :lib => 'will_paginate', :version => '>=2.3.7', :source => 'http://gems.github.com'
@@ -273,7 +275,7 @@ module SiteHelper
     content_tag :div, :class => 'user-menu' do
       actions = []
       if logged_in?
-        actions << link_to_unless_current(t(:welcome_user, :scope => [ :site_content ], :user => h(user_name)), user_path(current_user))
+        actions << link_to_unless_current(t(:welcome_user, :scope => [ :site_content ], :user => h(current_user.name)), user_path(current_user))
         unless Configuration.demo_site && @current_user.login == Configuration.demo_user
           actions << link_to_unless_current(t(:edit_object, :object => t(:account, :scope => [ :authentication ])), edit_user_path(current_user))
         end
