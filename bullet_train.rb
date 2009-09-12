@@ -85,7 +85,7 @@ end
 
 if yes_symlink_plugins
   inside "vendor/plugins" do
-    %w(active_enumeration acts_as_list acts_as_tree authlogic indexer searchable_record trainyard engines easy-fckeditor http_accept_language make_resourceful).each do |plugin_name|
+    %w(active_enumeration acts_as_list acts_as_tree indexer searchable_record trainyard engines easy-fckeditor http_accept_language make_resourceful).each do |plugin_name|
       run "ln -s #{File.join(ask_symlink_dir, plugin_name)} #{plugin_name}"
     end
     run "ln -s #{File.join(ask_symlink_dir, 'exception_notification')} exception_notification" if yes_exception_notification
@@ -99,7 +99,6 @@ else
   plugin "active_enumeration", :git => "git://github.com/glennpow/active_enumeration.git"
   plugin "acts_as_list", :git => "git://github.com/rails/acts_as_list.git"
   plugin "acts_as_tree", :git => "git://github.com/rails/acts_as_tree.git"
-  plugin "authlogic", :git => "git://github.com/binarylogic/authlogic.git"
   plugin "indexer", :git => "git://github.com/glennpow/indexer.git"
   plugin "searchable_record", :git => "git://github.com/glennpow/searchable_record.git"
   plugin "trainyard", :git => "git://github.com/glennpow/trainyard.git"
